@@ -1,12 +1,8 @@
-<!-- CopyRight (C) 2017-2022 Alibaba Group Holding Limited. -->
-<!-- Created by Tw93 on 16/10/26. -->
-<!--A loading indicator. Custom text supported. -->
-
 <template>
   <div :class="[showLoading && needMask && 'loading-need-mask']"
        @click="maskClicked"
        :style="maskStyle">
-    <div class="wxc-loading" :style="{ top: topPosition +'px'}" v-if="showLoading">
+    <div class="loading" :style="{ top: topPosition +'px'}" v-if="showLoading">
       <div :class="['loading-box',loading.class]" :aria-hidden="true">
         <image :src="loading.url"
                class="loading-trip-image"
@@ -28,26 +24,26 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.2);
   }
-  .wxc-loading {
+  .loading {
     position: fixed;
-    left: 287px;
-    top: 500px;
+    left: 302px;
+    top: 500;
     z-index: 9999;
   }
   .loading-box {
     align-items: center;
     justify-content: center;
     border-radius: 20px;
-    width: 175px;
-    height: 175px;
-    background-color: rgba(0, 0, 0, 0.3);
+    width: 150px;
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.7);
   }
   .trip-loading {
     background-color: rgba(0, 0, 0, .2);
   }
   .loading-trip-image {
-    height: 75px;
-    width: 75px;
+    height: 65px;
+    width: 65px;
   }
   .loading-text {
     color: #ffffff;
@@ -119,7 +115,7 @@
         return loading;
       },
       topPosition () {
-        return (Utils.env.getPageHeight() - 200) / 2;
+        return (Utils.env.getPageHeight()) / 2;
       }
     },
     created () {

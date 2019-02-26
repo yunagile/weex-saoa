@@ -1,3 +1,8 @@
+<!-- by:Jie. 2018/4/18
+    @param value      [Aarray]  checkbox组
+    @param val        [String]  默认选中值
+    @param disabled   [Boolean] 禁用选择框
+-->
 <template>
   <div class="checkbox" @click="change">
     <text class="box" :class="[checked ? 'box-checked' : '', disabled ? 'box-disabled' : '']"></text>

@@ -58,6 +58,132 @@
   </div>
 </template>
 
+<script>
+  import { INPUT_ICON, ARROW_ICON, CLOSE_ICON } from './js/search';
+  export default {
+    props: {
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      alwaysShowCancel: {
+        type: Boolean,
+        default: false
+      },
+      inputType: {
+        type: String,
+        default: 'text'
+      },
+      mod: {
+        type: String,
+        default: 'default'
+      },
+      autofocus: {
+        type: Boolean,
+        default: false
+      },
+      theme: {
+        type: String,
+        default: 'gray'
+      },
+      defaultValue: {
+        type: String,
+        default: ''
+      },
+      placeholder: {
+        type: String,
+        default: '搜索'
+      },
+      depName: {
+        type: String,
+        default: '杭州'
+      }
+    },
+    computed: {
+      needShowCancel () {
+        return this.alwaysShowCancel || this.showCancel;
+      }
+    },
+    data: () => ({
+      inputIcon: INPUT_ICON,
+      closeIcon: CLOSE_ICON,
+      arrowIcon: ARROW_ICON,
+      showCancel: false,
+      showClose: false,
+      value: ''
+    }),
+    created () {
+      this.defaultValue && (this.value = this.defaultValue);
+      if (this.disabled) {
+        this.showCancel = false;
+        this.showClose = false;
+      }
+      const { platform } = weex.config.env;
+      this.isIos = platform.toLowerCase() === 'ios';
+    },
+    methods: {
+      onBlur () {
+        const self = this;
+        setTimeout(() => {
+          self.showCancel = false;
+          self.detectShowClose();
+          self.$emit('wxcSearchbarInputOnBlur', { value: self.value });
+        }, 10);
+      },
+      autoBlur () {
+        this.$refs['search-input'].blur();
+      },
+      onFocus () {
+        if (this.isDisabled) {
+          return;
+        }
+        this.showCancel = true;
+        this.detectShowClose();
+        this.$emit('wxcSearchbarInputOnFocus', { value: this.value });
+      },
+      closeClicked () {
+        this.value = '';
+        this.showCancel && (this.showCancel = false);
+        this.showClose && (this.showClose = false);
+        this.$emit('wxcSearchbarCloseClicked', { value: this.value });
+        this.$emit('wxcSearchbarInputOnInput', { value: this.value });
+      },
+      onInput (e) {
+        this.value = e.value;
+        this.showCancel = true;
+        this.detectShowClose();
+        this.$emit('wxcSearchbarInputOnInput', { value: this.value });
+      },
+      onSubmit (e) {
+        this.onBlur();
+        this.value = e.value;
+        this.showCancel = true;
+        this.detectShowClose();
+        this.$emit('wxcSearchbarInputReturned', { value: this.value });
+      },
+      cancelClicked () {
+        this.showCancel && (this.showCancel = false);
+        this.showClose && (this.showClose = false);
+        this.$emit('wxcSearchbarCancelClicked', { value: this.value });
+      },
+      divClicked () {
+        this.$emit('dclick',{});
+      },
+      detectShowClose () {
+        this.showClose = (this.value.length > 0) && this.showCancel;
+      },
+      depClicked () {
+        this.$emit('wxcSearchbarDepChooseClicked', {});
+      },
+      inputDisabledClicked () {
+        this.$emit('inputDisabledClicked', {});
+      },
+      setValue (value) {
+        this.value = value;
+      }
+    }
+  };
+</script>
 <style scoped>
   .wxc-search-bar {
     padding-left: 20px;
@@ -185,131 +311,3 @@
     left: 200px;
   }
 </style>
-
-<script>
-  import { INPUT_ICON, ARROW_ICON, CLOSE_ICON } from './js/search';
-
-  export default {
-    props: {
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      alwaysShowCancel: {
-        type: Boolean,
-        default: false
-      },
-      inputType: {
-        type: String,
-        default: 'text'
-      },
-      mod: {
-        type: String,
-        default: 'default'
-      },
-      autofocus: {
-        type: Boolean,
-        default: false
-      },
-      theme: {
-        type: String,
-        default: 'gray'
-      },
-      defaultValue: {
-        type: String,
-        default: ''
-      },
-      placeholder: {
-        type: String,
-        default: '搜索'
-      },
-      depName: {
-        type: String,
-        default: '杭州'
-      }
-    },
-    computed: {
-      needShowCancel () {
-        return this.alwaysShowCancel || this.showCancel;
-      }
-    },
-    data: () => ({
-      inputIcon: INPUT_ICON,
-      closeIcon: CLOSE_ICON,
-      arrowIcon: ARROW_ICON,
-      showCancel: false,
-      showClose: false,
-      value: ''
-    }),
-    created () {
-      this.defaultValue && (this.value = this.defaultValue);
-      if (this.disabled) {
-        this.showCancel = false;
-        this.showClose = false;
-      }
-      const { platform } = weex.config.env;
-      this.isIos = platform.toLowerCase() === 'ios';
-    },
-    methods: {
-      onBlur () {
-        const self = this;
-        setTimeout(() => {
-          self.showCancel = false;
-          self.detectShowClose();
-          self.$emit('wxcSearchbarInputOnBlur', { value: self.value });
-        }, 10);
-      },
-      autoBlur () {
-        this.$refs['search-input'].blur();
-      },
-      onFocus () {
-        if (this.isDisabled) {
-          return;
-        }
-        this.showCancel = true;
-        this.detectShowClose();
-        this.$emit('wxcSearchbarInputOnFocus', { value: this.value });
-      },
-      closeClicked () {
-        this.value = '';
-        this.showCancel && (this.showCancel = false);
-        this.showClose && (this.showClose = false);
-        this.$emit('wxcSearchbarCloseClicked', { value: this.value });
-        this.$emit('wxcSearchbarInputOnInput', { value: this.value });
-      },
-      onInput (e) {
-        this.value = e.value;
-        this.showCancel = true;
-        this.detectShowClose();
-        this.$emit('wxcSearchbarInputOnInput', { value: this.value });
-      },
-      onSubmit (e) {
-        this.onBlur();
-        this.value = e.value;
-        this.showCancel = true;
-        this.detectShowClose();
-        this.$emit('wxcSearchbarInputReturned', { value: this.value });
-      },
-      cancelClicked () {
-        this.showCancel && (this.showCancel = false);
-        this.showClose && (this.showClose = false);
-        this.$emit('wxcSearchbarCancelClicked', { value: this.value });
-      },
-      divClicked () {
-        this.$emit('dclick',{});
-      },
-      detectShowClose () {
-        this.showClose = (this.value.length > 0) && this.showCancel;
-      },
-      depClicked () {
-        this.$emit('wxcSearchbarDepChooseClicked', {});
-      },
-      inputDisabledClicked () {
-        this.$emit('inputDisabledClicked', {});
-      },
-      setValue (value) {
-        this.value = value;
-      }
-    }
-  };
-</script>

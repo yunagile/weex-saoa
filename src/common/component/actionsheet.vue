@@ -1,8 +1,13 @@
-<!-- by:zj 2018/4/9 -->
+<!-- by:Jie. 2018/4/18
+    @param items  [数组类型]按钮的数据,格式为: ['拍照','从相册选择'] 
+    @param title  [文本类型]标题,默认为'请选择'
+    @param button [文本类型]默认值为'取消'
+    @param itemClick  [方法]item的点击事件,参数为 item,index
+-->
 <template>
     <div v-if="value">
-        <smask @click="_maskClick"></smask>
-        <div class="actionsheet-box" :style="{'bottom': '-'+bottom+'px'}" ref="actionsheetBox">
+        <smask ref="mask" @click="_maskClick" :style="{'opacity': '0'}" rgba="0.5"></smask>
+        <div class="actionsheet-box" :style="{'bottom': '-'+ bottom +'px'}" ref="actionsheetBox">
             <div class="actionsheet-top">
                 <text class="actionsheet-title" v-if="title">{{title}}</text>
                 <div class="actionsheet-content">
@@ -18,11 +23,10 @@
 </template>
 
 <script>
-    import mask from "./smask.vue"
     var animation = weex.requireModule('animation');
     module.exports = {
         components:{
-            "smask" : mask
+            "smask" : require("./smask.vue")
         },
         props: {
             title: {
@@ -56,15 +60,25 @@
         },
         methods: {
             show(){ },
+            _maskanimation:function(translate, fn){
+                var el = this.$refs.mask;
+                animation.transition(el, {
+                    styles: {
+                        opacity: translate,
+                    },
+                    duration: 200,
+                    delay: 0
+                }, () => {
+                    fn && fn();
+                })
+            },
             _animationFn: function (translate, fn) {
                 var el = this.$refs.actionsheetBox;
                 animation.transition(el, {
                     styles: {
-                        transform: translate,
-                        transformOrigin: 'center center'
+                        transform: translate
                     },
                     duration: 200,
-                    timingFunction: "ease-in",
                     delay: 0
                 }, () => {
                     fn && fn();
@@ -72,6 +86,7 @@
             },
             _open() {
                 var translate = 'translate(0px, -' + (this.bottom + 20) + 'px, 0px)';
+                this._maskanimation("1");
                 this._animationFn(translate)
             },
             _maskClick () {
@@ -80,6 +95,7 @@
                     this.$emit('input', false);
                     this.$emit("maskClick");
                 });
+                this._maskanimation("0");
             },
             _itemClick(item,index) {
                 var translate = 'translate(0px, ' + (this.bottom + 20) + 'px, 0px)';
@@ -87,6 +103,7 @@
                     this.$emit('input', false);
                     this.$emit('itemClick', item,index);
                 });
+                this._maskanimation("0");
             },
             _btnClick() {
                 var translate = 'translate(0px, ' + (this.bottom + 20) + 'px, 0px)';
@@ -94,6 +111,7 @@
                     this.$emit('input', false);
                     this.$emit('cancel');
                 });
+                this._maskanimation("0");
             }
         }
     }

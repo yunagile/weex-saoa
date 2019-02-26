@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <wxc-overlay :show="show && hasOverlay"
+    <x-overlay :show="show && hasOverlay"
                  v-if="show"
                  v-bind="mergeOverlayCfg"
                  :can-auto-close="overlayCanClose"
                  @wxcOverlayBodyClicking="wxcOverlayBodyClicking"
-                 @wxcOverlayBodyClicked="wxcOverlayBodyClicked"></wxc-overlay>
+                 @wxcOverlayBodyClicked="wxcOverlayBodyClicked"></x-overlay>
     <div ref="wxc-mask"
          class="wxc-mask"
          v-if="show"
@@ -26,39 +26,13 @@
   </div>
 </template> 
 
-<style scoped>
-  .container {
-    position: fixed;
-    width: 750px;
-    /*兼容H5异常*/
-    z-index: 99999;
-  }
-  .wxc-mask {
-    position: fixed;
-    top: 300px;
-    left: 60px;
-    width: 702px;
-    height: 800px;
-  }
-  .mask-bottom {
-    width: 100px;
-    height: 100px;
-    background-color: transparent;
-    justify-content: center;
-    align-items: center;
-  }
-  .mask-close-icon {
-    width: 64px;
-    height: 64px;
-  }
-</style>
+
 
 <script>
   const animation = weex.requireModule('animation');
-  import overlay from './overlay.vue';
   export default {
     components: { 
-        "wxc-overlay":overlay 
+        "x-overlay":require('./overlay.vue') 
         },
     props: {
       height: {
@@ -201,3 +175,29 @@
     }
   };
 </script>
+<style scoped>
+  .container {
+    position: fixed;
+    width: 750px;
+    /*兼容H5异常*/
+    z-index: 99999;
+  }
+  .wxc-mask {
+    position: fixed;
+    top: 300px;
+    left: 60px;
+    width: 702px;
+    height: 800px;
+  }
+  .mask-bottom {
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+  }
+  .mask-close-icon {
+    width: 64px;
+    height: 64px;
+  }
+</style>

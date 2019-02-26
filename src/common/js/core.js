@@ -1,5 +1,10 @@
-const localpath = "http://192.168.1.3:8080/";
-//const rootPath = "http://120.27.26.19:8068/bsys";
+/**
+  *By Jie. 2018/04/08
+  *核心js库
+  **/
+const localpath = "http://192.168.1.88:8080/";
+//const localpath = "http://120.27.26.19:9527/";
+//const rootPath = "http://192.168.1.88:8089/bsys";
 const rootPath = "http://oa.yunagile.com:8068/bsys";
 const docPath = "https://owa-box.vips100.com";
 const otherRootPath = "http://oa.yunagile.com:8068/bsys";
@@ -16,7 +21,7 @@ var asCore = {
     otherRootPath: otherRootPath,
     bsessionid: bsessionid,
     /* 获取context */
-    appInitial: function (callback) {
+    appInitial: function (callback) { 
         var s = this;
         this.post("/initPortalInfo", null, function (data, flag, msg) {
             try {

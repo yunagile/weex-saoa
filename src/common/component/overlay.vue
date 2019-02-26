@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="wxc-overlay"
-         ref="wxc-overlay"
+    <div class="x-overlay"
+         ref="x-overlay"
          v-if="show"
          :hack="shouldShow"
          @click="overlayClicked"
@@ -13,7 +13,7 @@
 </template>
 
 <style scoped>
-  .wxc-overlay {
+  .x-overlay {
     width: 750px;
     position: fixed;
     left: 0;
@@ -69,13 +69,13 @@
     },
     methods: {
       overlayClicked (e) {
-        this.canAutoClose ? this.appearOverlay(false) : this.$emit('wxcOverlayBodyClicked', {});
+        this.canAutoClose ? this.appearOverlay(false) : this.$emit('overlayClicked', {});
       },
       appearOverlay (bool, duration = this.duration) {
         const { hasAnimation, timingFunction, canAutoClose } = this;
         const needEmit = !bool && canAutoClose;
-        needEmit && (this.$emit('wxcOverlayBodyClicking', {}));
-        const overlayEl = this.$refs['wxc-overlay'];
+        needEmit && (this.$emit('overlayClicking', {}));
+        const overlayEl = this.$refs['x-overlay'];
         if (hasAnimation && overlayEl) {
           animation.transition(overlayEl, {
             styles: {
@@ -85,10 +85,10 @@
             timingFunction: timingFunction[bool ? 0 : 1],
             delay: 0
           }, () => {
-            needEmit && (this.$emit('wxcOverlayBodyClicked', {}));
+            needEmit && (this.$emit('overlayClicked', {}));
           });
         } else {
-          needEmit && (this.$emit('wxcOverlayBodyClicked', {}));
+          needEmit && (this.$emit('overlayClicked', {}));
         }
       }
     }

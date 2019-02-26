@@ -1,3 +1,12 @@
+<!-- by:Jie. 2018/4/18
+    @param topBorder      [Boolean]  是否显示上边框
+    @param bottomBorder   [Boolean]  是否显示下边框
+    @param hasArrow       [Boolean]  是否显示右侧小箭头按钮
+    @param title          [String]   标题文本
+    @param disabeld       [Boolean]  是否禁用
+    @param cellStyle      [Object]   cell样式
+    @param cellClick      [function] cell单击事件
+-->
 <template>
 <div :class="['wxc-cello',topBorder && 'cell-top-border',bottomBorder && 'cell-bottom-border',!disabeld && 'cell-disabeld']" @click="cellClicked">
   <div :class="['wxc-cell', hasTopBorder && 'cell-top-border', hasBottomBorder && !bottomBorder && 'cell-bottom-border', hasVerticalIndent && 'cell-indent', desc && 'has-desc']"
@@ -22,6 +31,65 @@
   </div>
 </div>
 </template>
+<script>
+  export default {
+    props: {
+      label: {
+        type: String,
+        default: ''
+      },
+      title: {
+        type: String,
+        default: ''
+      },
+      desc: {
+        type: String,
+        default: ''
+      },
+      topBorder :{
+        type: Boolean,
+        default: false
+      },
+      bottomBorder :{
+        type: Boolean,
+        default: false
+      },
+      disabeld : {
+        type: Boolean,
+        default: false
+      },
+      hasTopBorder: {
+        type: Boolean,
+        default: false
+      },
+      hasBottomBorder: {
+        type: Boolean,
+        default: true
+      },
+      hasArrow: {
+        type: Boolean,
+        default: false
+      },
+      hasVerticalIndent: {
+        type: Boolean,
+        default: true
+      },
+      cellStyle: {
+        type: Object,
+        default: () => ({})
+      },
+      autoAccessible: {
+        type: Boolean,
+        default: true
+      }
+    },
+    methods: {
+      cellClicked (e) {
+        this.$emit('cellClick', { e });
+      }
+    }
+  };
+</script>
 
 <style scoped>
   .iconfont {
@@ -92,64 +160,3 @@
     margin-top: 4px;
   }
 </style>
-
-<script>
-
-  export default {
-    props: {
-      label: {
-        type: String,
-        default: ''
-      },
-      title: {
-        type: String,
-        default: ''
-      },
-      desc: {
-        type: String,
-        default: ''
-      },
-      topBorder :{
-        type: Boolean,
-        default: false
-      },
-      bottomBorder :{
-        type: Boolean,
-        default: false
-      },
-      disabeld : {
-        type: Boolean,
-        default: false
-      },
-      hasTopBorder: {
-        type: Boolean,
-        default: false
-      },
-      hasBottomBorder: {
-        type: Boolean,
-        default: true
-      },
-      hasArrow: {
-        type: Boolean,
-        default: false
-      },
-      hasVerticalIndent: {
-        type: Boolean,
-        default: true
-      },
-      cellStyle: {
-        type: Object,
-        default: () => ({})
-      },
-      autoAccessible: {
-        type: Boolean,
-        default: true
-      }
-    },
-    methods: {
-      cellClicked (e) {
-        this.$emit('cellClick', { e });
-      }
-    }
-  };
-</script>

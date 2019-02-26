@@ -4,7 +4,7 @@ export default {
             backcolor:"",
             title: "小浦",
             label:"在哪吃饭？",
-            img:"http://192.168.1.3:8080/img/head.jpg",
+            img:"root:img/head.jpg",
             icon:"",
             fontsize:"",
             count:5,
@@ -16,17 +16,17 @@ export default {
             title: "腾讯新闻",
             label:"北大留美硕士控诉父母“控制与伤害” 12年未回家过年",
             icon:"",
-            img:"http://192.168.1.3:8080/img/tenxunnew.png",
+            img:"root:img/tenxunnew.png",
             fontsize:"",
             count:1,
-            rowid:"2",
+            rowid:"news",
             rename:'list2'
         },
         {
             backcolor:"",
             title: "小明",
             label:"发个链接给我",
-            img:"http://192.168.1.3:8080/img/head1.jpg",
+            img:"root:img/head1.jpg",
             icon:"",
             fontsize:"",
             count:"",
@@ -41,7 +41,7 @@ export default {
             icon:"\ue6b9",
             fontsize:"65",
             count:1,
-            rowid:"4",
+            rowid:"notice",
             rename:'list4'
         },
         {
@@ -52,14 +52,14 @@ export default {
             icon:"\ue602",
             fontsize:"55",
             count:8,
-            rowid:"5",
+            rowid:"dayReport",
             rename:'list5'
         },
         {
             backcolor:"",
             title: "小杰",
             label:"明天去玩吗?",
-            img:"http://192.168.1.3:8080/img/myhead.gif",
+            img:"root:img/myhead.gif",
             icon:"",
             fontsize:"",
             count:"",
@@ -74,7 +74,7 @@ export default {
             icon:"\ue6d9",
             fontsize:"58",
             count:"1",
-            rowid:"7",
+            rowid:"email",
             rename:'list7'
         }
     ]

@@ -8,15 +8,15 @@
     <div class="content-div">
       <div class="cli-div">
         <text class="cli-icon iconfont">&#xe66a;</text>
-        <input type="text"  ref="usname" class="input" placeholder="请输入用户名" v-model="username" @input="userinput" @focus="changeClean" />
+        <input type="text"  ref="usname" class="x-input" placeholder="请输入用户名" v-model="username" @input="userinput" @focus="changeClean" />
         <text v-if="showClean" class="cli-icon iconfont cli-icon2" @click="cleanUsername">&#xe677;</text>
       </div>
       <div class="cli-div margin-top-20">
         <text class="cli-icon iconfont">&#xe649;</text>
-        <input   :type="showPass?'text':'password'" ref="pass" class="input" placeholder="请输入密码" :value="userpass" @input="passinput"/>
-
+        <input v-if="(showPass)" type="text" class="x-input" placeholder="请输入密码" :value="userpass"/>
+        <input v-if="(showPass2)" type="password" class="x-input" placeholder="请输入密码" :value="userpass"/>
         <text v-if="showPass" class="cli-icon iconfont" @click="hPass">&#xe62d;</text>
-        <text v-if="!showPass" class="cli-icon iconfont" @click="sPass">&#xe62e;</text>
+        <text v-else class="cli-icon iconfont" @click="sPass">&#xe62e;</text>
       </div>
     </div>
     <!-- 自动登录层 -->
@@ -70,8 +70,6 @@
 </template>
 
 <script>
-import checkbox from "./common/component/checkbox.vue";
-import button from "./common/component/button.vue";
 import Utils from "./common/js/utils";
 import encrypt from "./common/js/encrypt";
 import asCore from "./common/js/core";
@@ -82,8 +80,8 @@ const navigator = weex.requireModule('navigator');
 const loginBroad = new BroadcastChannel('login');
 export default {
   components: {
-    checkbox: checkbox,
-    loginbutton: button
+    "checkbox": require("./common/component/checkbox.vue"),
+    "loginbutton": require("./common/component/button.vue")
   },
   beforeCreate() {
     
@@ -115,6 +113,7 @@ export default {
       checkData: ['1'],
       isremember: true,
       showPass:false,
+      showPass2:true,
       showClean:false
     
     };
@@ -146,7 +145,7 @@ export default {
       return true;
     },
     login: function() {
-      var self = this;
+      var s = this;
       if (!this.loginCheck()) return;
       this.setBtnDisabled(true);
       encrypt.setMaxDigits(130);
@@ -155,26 +154,26 @@ export default {
         "",
         "818e85269508bd1b747a0fa10a85e832ce461ccc2195f944430611c7ac28b0da2eb7814a57c194a4fd396d6ec802aa74353fa4f6981bdc726d79400920304e6d60780f5b55fc312831618d512c32df94133cefddedd733843cd419b9c2e6c7bb593b134018d84c6a14e1e2931ddc0d9c9342fef8c95dd3cc29552f1056c822b1"
       );
-      var ps = encrypt.encryptedString(key, encodeURIComponent(self.userpass));
+      var ps = encrypt.encryptedString(key, encodeURIComponent(s.userpass));
       stream.fetch({
           method: "POST",
           url: asCore.rootPath + "/loginAsAction",
           type: "json",
           body: asCore.toParams({
-            username: self.username,
+            username: s.username,
             password: ps
           })
         },
         function(ret) {
           if (!ret.ok) {
-            self.hintShow("登录失败,请检查网络连接!");
-            self.setBtnDisabled(false);
+            s.hintShow("登录失败,请检查网络连接!");
+            s.setBtnDisabled(false);
           } else {
             var re = ret.data;
             if (re.status == "SUCCESS") {
-              pref.setItem("as_username", self.username);
-              if(self.isremember==true){
-                pref.setItem("as_password", self.userpass);
+              pref.setItem("as_username", s.username);
+              if(s.isremember==true){
+                pref.setItem("as_password", s.userpass);
                 pref.setItem("encryptedPass",ps)
                 pref.setItem("as_password_checkbox", '1');
               }else{
@@ -183,7 +182,7 @@ export default {
                 pref.setItem("as_password_checkbox", '0');
               }
               asCore.setBsessionid(re.data.bsessionid);
-              self.setBtnInfo(false,"登录成功",true);
+              s.setBtnInfo(false,"登录成功",true);
               loginBroad.postMessage({success:1});
               navigator.back();
             } else {
@@ -195,15 +194,15 @@ export default {
                 var interval = setInterval(function() {
                   t = t - 1000;
                   if (t < 0) {
-                    self.setBtnInfo(false,"登录",false);
+                    s.setBtnInfo(false,"登录",false);
                     clearInterval(interval);
                   } else {
-                    self.setBtnInfo(false,"登录错误次数过多(" + Math.ceil(t / 1000) + ")",true);
+                    s.setBtnInfo(false,"登录错误次数过多(" + Math.ceil(t / 1000) + ")",true);
                   }
                 }, 1000);
               } else {
-                self.setBtnDisabled(false);
-                self.hintShow(re.msg);
+                s.setBtnDisabled(false);
+                s.hintShow(re.msg);
               }
             }
           }
@@ -230,10 +229,11 @@ export default {
       this.btnDisabled = disabled;
     },
     goToSetPass : function(){
-      var self = this;
+      var s = this;
       pref.getItem("as_username",event => {
         if(event.result=="success"){
-          self.username = event.data;
+          s.username = event.data;
+          s.showClean = true;
         }
       });
       var checkPass = ''; 
@@ -241,26 +241,35 @@ export default {
           checkPass = event.data;
           if(checkPass=='1'){
             pref.getItem("as_password",event => {
-              self.userpass = event.data;
+              s.userpass = event.data;
             });
-            self.isremember = true;
+            s.isremember = true;
           }else{
-            self.checkData = [];
-            self.isremember = false;
-            self.userpass = "";
+            s.checkData = [];
+            s.isremember = false;
+            s.userpass = "";
           }
       });
     },
     cleanUsername(){
-      var self = this;
-      this.username = ' ';
-      self.showClean = false;
+      var s = this;
+      s.username = '';
+      s.$nextTick(()=>{
+        s.showClean = false;
+      });
     },
     sPass(){
-      this.showPass = true;
+      this.showPass2 = false;
+      this.$nextTick(()=>{
+        this.showPass = true;
+      });
+      
     },
     hPass(){
       this.showPass = false;
+      this.$nextTick(()=>{
+        this.showPass2 = true;
+      });
     },
     changeClean(){
       var self = this;

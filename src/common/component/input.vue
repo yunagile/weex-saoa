@@ -10,13 +10,12 @@
 </template>
 
 <script>
-import minbar from "./minbar.vue"
 import asCore from "../../common/js/core";
 const navigator = weex.requireModule('navigator') ;
 const lBroad = new BroadcastChannel("inputBroad");
 export default {
     components:{
-        "minbar" : minbar
+        "minbar" : require("./minbar.vue")
     },
     data(){
         return {

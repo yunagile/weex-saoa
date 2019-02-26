@@ -113,7 +113,11 @@
     margin-top:25px;
   }
 
-  .input {
+  .x-input {
+    flex: 1;
+    height:80px;
+  }
+  .x-input2 {
     flex: 1;
     height:80px;
   }

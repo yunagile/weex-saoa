@@ -10,10 +10,12 @@
       </slot>
     </div>
     <slot name="middle">
-      <text class="middle-title" :style="{ color: textColor }" @click="titleButtonClick">{{title}}</text>
-      <slot name="other-title"></slot>
+      <div class="middle-div"  @click="titleButtonClick">
+        <text class="middle-title" :style="{ color: textColor }">{{title}}</text>
+        <slot name="other-title"></slot>
+      </div>
     </slot>
-    <div class="right" @click="rightButtonClicked">
+    <div :class="['right',isIos()?'ios-left':'']" @click="rightButtonClicked">
       <slot name="right"></slot>
     </div>
   </div>
@@ -126,24 +128,31 @@
     padding-top:30px;
   }
   .left {
+    height:80px;
     width: 180px;
+    justify-content: center;
     padding-left: 25px;
   }
   .ios-left {
     padding-top:10px;
   }
+  .middle-div {
+    flex-direction: row;
+  }
   .middle-title {
     font-size: 35px;
     font-weight: 300;
     color: #ffffff;
-    height: 36px;
-    line-height: 34px;
+    padding-top:20px;
+    padding-bottom:20px;
   }
 
   .right {
     width: 180px;
+    height:80px;
     padding-right: 25px;
     align-items: flex-end;
+    justify-content: center;
   }
 
   .left-button {

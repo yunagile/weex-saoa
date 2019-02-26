@@ -1,23 +1,20 @@
-<!-- CopyRight (C) 2017-2022 Alibaba Group Holding Limited. -->
-<!-- Created by Tw93 on 16/10/25. -->
-<!--A popup box with customized contents.-->
 
 <template>
   <div>
     <div @touchend="handleTouchEnd">
-      <wxc-overlay :show="haveOverlay && isOverShow"
+      <x-overlay :show="haveOverlay && isOverShow"
                    v-if="show"
                    ref="overlay"
                    v-bind="overlayCfg"
-                   opacity="0.1"
-                   @wxcOverlayBodyClicking="wxcOverlayBodyClicking" ></wxc-overlay>
+                   opacity="0.5"
+                   @overlayClicking="bodyClicking" ></x-overlay>
     </div>
-    <div ref="wxc-popup"
+    <div ref="x-popup"
          v-if="show"
          :height="_height"
          :hack="isNeedShow"
          @click="()=>{}"
-         :class="['wxc-popup', pos]"
+         :class="['x-popup', pos]"
          :style="padStyle">
       <slot name="popup_content"></slot>
     </div>
@@ -25,7 +22,7 @@
 </template>
 
 <style scoped>
-  .wxc-popup {
+  .x-popup {
     position: fixed;
     width: 750px; 
   }
@@ -50,11 +47,13 @@
 
 <script>
   const animation = weex.requireModule('animation');
+   import asCore from '../js/core'
   const { platform } = weex.config.env;
   const isWeb = typeof (window) === 'object' && platform.toLowerCase() === 'web';
-  import WxcOverlay from './overlay.vue';
   export default {
-    components: { WxcOverlay },
+    components: { 
+      "x-overlay": require("./overlay.vue")
+    },
     props: {
       show: {
         type: Boolean,
@@ -73,7 +72,7 @@
         default: () => ({
           hasAnimation: true,
           timingFunction: ['ease-in', 'ease-out'],
-          duration: 300,
+          duration: 200,
           opacity: 0.6
         })
       },
@@ -102,6 +101,9 @@
     }),
     computed: {
       isNeedShow () {
+        if(this.pos=="top"){
+          //return this.show
+        }
         setTimeout(() => {
           this.appearPopup(this.show);
         }, 50);
@@ -141,19 +143,19 @@
     methods: {
       handleTouchEnd (e) {
         // 在支付宝上面有点击穿透问题
-        const { platform } = weex.config.env;
-        platform === 'Web' && e.preventDefault && e.preventDefault();
+        //const { platform } = weex.config.env;
+        //platform === 'Web' && e.preventDefault && e.preventDefault();
       },
       hide () {
         this.appearPopup(false);
         this.$refs.overlay.appearOverlay(false);
       },
-      wxcOverlayBodyClicking () {
+      bodyClicking () {
         this.isShow && this.appearPopup(false);
       },
-      appearPopup (bool, duration = 300) {
+      appearPopup (bool, duration = 200) {
         this.isShow = bool;
-        const popupEl = this.$refs['wxc-popup'];
+        const popupEl = this.$refs['x-popup'];
         if (!popupEl) {
           return;
         }
@@ -166,20 +168,20 @@
           ...this.animation
         }, () => {
           if (!bool) {
-            this.$emit('wxcPopupOverlayClicked', { pos: this.pos });
+            this.$emit('popupClicked', { pos: this.pos });
           }
         });
       },
       getTransform (pos, width, height, bool) {
         let _size = pos === 'top' || pos === 'bottom' ? height : width;
         let _transform;
-        if (isWeb) {
-          _size -= this.standOut;
-        }
+        // if (isWeb) {
+        //   _size -= this.standOut;
+        // }
         bool && (_size = 0);
         switch (pos) {
           case 'top':
-            _transform = `translateY(${_size}px)`;
+            _transform = `height(${_size}px)`;
             break;
           case 'bottom':
             _transform = `translateY(-${_size}px)`;

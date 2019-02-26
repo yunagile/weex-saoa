@@ -1,6 +1,22 @@
+<!-- by:Jie. 2018/4/18
+    @param show           [Boolean]  显示隐藏对话框,默认值为false
+    @param title          [String]   对话框标题
+    @param content        [String]   对话框显示内容
+    @param top            [String]   对话框距离顶部的位置,默认值为400
+    @param confirmText    [String]   左边按钮文字,默认值为[确定]
+    @param cancelText     [String]   右边按钮文字,默认值为[取消]
+    @param mainBtnColor   [String]   主按钮颜色,默认值为'#1B82D2'
+    @param secondBtnColor [String]   副按钮颜色,默认值为'#666666'
+    @param showNoPrompt   [Boolean]  是否显示提示文字,默认值为false
+    @param noPromptText   [String]   提示文字,默认值为[不再提示]
+    @param isChecked      [Boolean]  是否选择提示文字
+    @param okBtnClick     [function] 确定按钮被单击事件,参数为:type
+    @param cancelBtnClick [function] 取消按钮被单击事件,参数为:type
+    @param noPromptClick  [function] 提示文字被单击
+-->
 <template>
   <div class="container">
-    <wxc-overlay v-if="show" :show="true" :hasAnimation="false"></wxc-overlay>
+    <x-overlay v-if="show" :show="true" :hasAnimation="false"></x-overlay>
     <div class="dialog-box" v-if="show" :style="{top:top+'px'}">
       <div class="dialog-content">
         <slot name="title">
@@ -29,82 +45,12 @@
     </div>
   </div>
 </template>
-
-<style scoped>
-  .container {
-    position: fixed;
-    width: 750px;
-    /*兼容H5异常*/
-    z-index: 99998;
-  }
-  .dialog-box {
-    position: fixed;
-    left: 96px;
-    width: 558px;
-    background-color: #FFFFFF;
-  }
-  .dialog-content {
-    padding-top: 36px;
-    padding-bottom: 36px;
-    padding-left: 36px;
-    padding-right: 36px;
-  }
-  .content-title {
-    color: #333333;
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .content-subtext {
-    color: #666666;
-    font-size: 28px;
-    line-height: 36px;
-    text-align: center;
-  }
-  .dialog-footer {
-    flex-direction: row;
-    align-items: center;
-    border-top-color: #F3F3F3;
-    border-top-width: 1px;
-  }
-  .footer-btn {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    height: 90px;
-  }
-  .cancel {
-    border-right-color: #F3F3F3;
-    border-right-width: 1px;
-  }
-  .btn-text {
-    font-size: 36px;
-    color: #666666;
-  }
-  .no-prompt {
-    width: 486px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    margin-top: 24px;
-  }
-  .no-prompt-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 12px;
-  }
-  .no-prompt-text {
-    font-size: 24px;
-    color: #A5A5A5;
-  }
-</style>
-
 <script>
-  import WxcOverlay from './overlay.vue'
   import { CHECKED, UN_CHECKED } from './js/dialog';
   export default {
-    components: { WxcOverlay },
+    components: { 
+      "x-overlay":require('./overlay.vue')
+    },
     props: {
       show: {
         type: Boolean,
@@ -182,3 +128,72 @@
     }
   };
 </script>
+<style scoped>
+  .container {
+    position: fixed;
+    width: 750px;
+    /*兼容H5异常*/
+    z-index: 99998;
+  }
+  .dialog-box {
+    position: fixed;
+    left: 96px;
+    width: 558px;
+    background-color: #FFFFFF;
+  }
+  .dialog-content {
+    padding-top: 36px;
+    padding-bottom: 36px;
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+  .content-title {
+    color: #333333;
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .content-subtext {
+    color: #666666;
+    font-size: 28px;
+    line-height: 36px;
+    text-align: center;
+  }
+  .dialog-footer {
+    flex-direction: row;
+    align-items: center;
+    border-top-color: #F3F3F3;
+    border-top-width: 1px;
+  }
+  .footer-btn {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 90px;
+  }
+  .cancel {
+    border-right-color: #F3F3F3;
+    border-right-width: 1px;
+  }
+  .btn-text {
+    font-size: 36px;
+    color: #666666;
+  }
+  .no-prompt {
+    width: 486px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 24px;
+  }
+  .no-prompt-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+  }
+  .no-prompt-text {
+    font-size: 24px;
+    color: #A5A5A5;
+  }
+</style>

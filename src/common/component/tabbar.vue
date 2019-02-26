@@ -39,85 +39,6 @@
   </div>
 </template>
 
-<style scoped>
-  .wxc-tab-page {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .tab-title-list {
-    flex-direction: row;
-    justify-content: space-around;
-    border-top-color: #e1e1e1;
-    border-top-width: 1px;
-  }
-
-  .title-item {
-    justify-content: center;
-    align-items: center;
-    border-bottom-style: solid;
-  }
-
-  .tab-page-wrap {
-    width: 750px;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  .tab-container {
-    flex: 1;
-    flex-direction: row;
-    position: absolute;
-  }
-
-  .tab-text {
-    lines: 1;
-    text-overflow: ellipsis;
-  }
-
-  .desc-tag {
-    position: absolute;
-    top: 10px;
-    right: 22px;
-    border-radius: 30px;
-    background-color: #FF3E3E;
-    height: 30px;
-    width: 30px;
-    align-items: center;
-    justify-content: center;
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-
-  .dot {
-    width: 14px;
-    height: 14px;
-    border-bottom-right-radius: 14px;
-    border-bottom-left-radius: 14px;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-    position: absolute;
-    top: 13px;
-    right: 43px;
-    background-color: #FF3E3E;
-  }
-
-  .desc-text {
-    font-size: 20px;
-    color: #ffffff;
-  }
-
-  .icon-font {
-    margin-bottom: 8px;
-  }
-  .no-margin {
-    margin-bottom: 0px;
-  }
-</style>
-
 <script>
   const dom = weex.requireModule('dom');
   const animation = weex.requireModule('animation');
@@ -255,3 +176,82 @@
     }
   };
 </script>
+
+<style scoped>
+  .wxc-tab-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .tab-title-list {
+    flex-direction: row;
+    justify-content: space-around;
+    border-top-color: #e1e1e1;
+    border-top-width: 1px;
+  }
+
+  .title-item {
+    justify-content: center;
+    align-items: center;
+    border-bottom-style: solid;
+  }
+
+  .tab-page-wrap {
+    width: 750px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .tab-container {
+    flex: 1;
+    flex-direction: row;
+    position: absolute;
+  }
+
+  .tab-text {
+    lines: 1;
+    text-overflow: ellipsis;
+  }
+
+  .desc-tag {
+    position: absolute;
+    top: 10px;
+    right: 22px;
+    border-radius: 30px;
+    background-color: #FF3E3E;
+    height: 30px;
+    width: 30px;
+    align-items: center;
+    justify-content: center;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    position: absolute;
+    top: 13px;
+    right: 43px;
+    background-color: #FF3E3E;
+  }
+
+  .desc-text {
+    font-size: 20px;
+    color: #ffffff;
+  }
+
+  .icon-font {
+    margin-bottom: 8px;
+  }
+  .no-margin {
+    margin-bottom: 0px;
+  }
+</style>

@@ -1,0 +1,6 @@
+{
+  "AppName":"软捷OA",
+  "AppId":"com.yunagile.debugger",
+  "SplashText":"基于weex以及weexplus框架开发的移动办公平台",
+  "WeexBundle":"index.js"
+}

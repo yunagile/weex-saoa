@@ -13,7 +13,7 @@ export const STYLE_MAP = {
     },
     normal: {
       backgroundColor: '#FFFFFF',
-      borderColor: '#A5A5A5',
+      borderColor: '#e2e2e2',
       borderWidth: '1px'
     },
     highlight: {

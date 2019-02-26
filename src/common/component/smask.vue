@@ -1,4 +1,4 @@
-<!-- by:zj 2018/4/9 -->
+<!-- by:Jie. 2018/4/9 -->
 <template>
     <div class="mask" @click="_click" :style="{'background-color':'rgba(0,0,0,'+ rgba +')'}"></div>
 </template>
